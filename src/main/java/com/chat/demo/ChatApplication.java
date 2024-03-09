@@ -17,10 +17,10 @@ public class ChatApplication {
 	@Bean
     CommandLineRunner commandLineRunner(UserRepo userRepo){
         return args -> {
-            userRepo.save(new User(null,"hamza","hamimi@insea.ac.ma","hellohamza","user"));
-            userRepo.save(new User(null,"zakaria","zamimi@insea.ac.ma","hellozakaria","user"));
+            userRepo.save(new User(null,"hamza","hamimi@insea.ac.ma","hellohamza","ADMIN"));
+            userRepo.save(new User(null,"zakaria","zamimi@insea.ac.ma","hellozakaria","admin"));
             userRepo.save(new User(null,"ahmed","aamimi@insea.ac.ma","helloahmed","user"));
-            userRepo.save(new User(null,"mohammed","mamimi@insea.ac.ma","hellomohammed","user"));
+            userRepo.save(new User(null,"mohammed","mamimi@insea.ac.ma","hellomohammed","USER"));
 			userRepo.findAll().forEach(u->{
 				System.out.println(u.getName()+" has been added to the database");
 			} );
