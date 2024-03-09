@@ -6,11 +6,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
+
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 
 @Controller
-@AllArgsConstructor
+@AllArgsConstructor 
 public class UserController {
     private UserRepo userRepo;
 
@@ -40,18 +44,15 @@ public class UserController {
     }
 
     @GetMapping("/adduser")
-    public String adduser() {
+    public String adduser(Model model) {
+        model.addAttribute("user", new User());
+        System.out.println("hello");
         return "adduser";
     }
 
     @PostMapping("/save")
-    public String login(Model model,User user,@RequestParam("name") String name,@RequestParam("email") String email, 
-    @RequestParam("password") String password,@RequestParam("role") String role) {
-                            System.out.println("email");
-                            System.out.println(email);
-                            userRepo.save(new User(null,name,email,password,role));
-                            return "index";
-        
-    
-
+    public String login(Model model,@Valid User user,BindingResult bindingResult) { 
+        if(bindingResult.hasErrors()) return "adduser" ;          
+        userRepo.save(user);
+        return "users";
 }}
