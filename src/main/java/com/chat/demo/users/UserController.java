@@ -1,11 +1,11 @@
 package com.chat.demo.users;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 
@@ -17,11 +17,16 @@ import org.springframework.validation.BindingResult;
 @AllArgsConstructor 
 public class UserController {
     private UserRepo userRepo;
+    private User getCurrentUser() {
+        return userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
 
     @GetMapping("/index")
     public String index() {
         return "index";
     }
+
     @GetMapping("/")
     public String in() {
         return "index";
@@ -35,7 +40,8 @@ public class UserController {
         return "users";
     }
     @GetMapping("/template1")
-    public String navbar() {
+    public String navbar(Model model) {
+        model.addAttribute("email",getCurrentUser().getEmail() );
         return "template1";
     }
     @GetMapping("/userinfo")

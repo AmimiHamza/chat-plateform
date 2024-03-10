@@ -2,14 +2,16 @@ package com.chat.demo.sec;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.web.SecurityFilterChain;
-
+import java.util.Collections;
 import com.chat.demo.users.User;
 import com.chat.demo.users.UserRepo;
 
@@ -31,10 +33,13 @@ public class SecurityConfig {
             User user = userRepo.findByEmail(email);
             if (user == null) throw new UsernameNotFoundException("User not found with username or email : " + email);
 
+            // Store the email in the session
+            Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             return org.springframework.security.core.userdetails.User.withUsername(user.getEmail())
-                    .password(passwordEncoder().encode(user.getPassword()))
-                    .roles(user.getRole())
-                    .build();
+                .password(passwordEncoder().encode(user.getPassword()))
+                .roles(user.getRole())
+                .build();
         };
     }
     @Bean
