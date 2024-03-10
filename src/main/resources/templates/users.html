@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-                xmlns:layout="http://www.ultraq.net.nz/thymleaf/layout" >
+                xmlns:layout="http://www.ultraq.net.nz/thymleaf/layout"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css" 
@@ -10,12 +11,14 @@
 </head>
 <body>
     <div layout:fragment="content">
-        <iframe th:src="@{/template1}" width="100%" height="50px" frameborder="0"></iframe>
+        <iframe th:src="@{/template1}" width="100%" height="50px" frameborder="0" scrolling="no"></iframe>
         <!-- <iframe src="template1.html" width="100%" height="50px" frameborder="0"></iframe> -->
 
     <div class="container">
         <div class="card">
             <div class="card-header">list des users:</div>
+            <a class="nav-link" target="_parent" href="#"><span sec:authentication="name"></span></a>
+
         
         <div class="card-body">
             <table class="table">
