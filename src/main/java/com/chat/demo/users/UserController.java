@@ -17,15 +17,12 @@ import org.springframework.validation.BindingResult;
 @AllArgsConstructor 
 public class UserController {
     private UserRepo userRepo;
+    
     private User getCurrentUser() {
         return userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
 
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
 
     @GetMapping("/")
     public String in() {
@@ -33,28 +30,35 @@ public class UserController {
     }
     
 
-    @GetMapping("/users")
-    public String users(Model model) {
-        java.util.List<User> users = userRepo.findAll();
-        model.addAttribute("users", users);
-        return "users";
-    }
-    @GetMapping("/template1")
-    public String navbar(Model model) {
-        model.addAttribute("email",getCurrentUser().getEmail() );
-        return "template1";
-    }
-    @GetMapping("/userinfo")
-    public String userinfo() {
-        return "userinfo";
-    }
+    @GetMapping("/index")
+public String index() {
+    return "index";
+}
 
-    @GetMapping("/adduser")
-    public String adduser(Model model) {
-        model.addAttribute("user", new User());
-        System.out.println("hello");
-        return "adduser";
-    }
+@GetMapping("/users")
+public String users(Model model) {
+    java.util.List<User> users = userRepo.findAll();
+    model.addAttribute("users", users);
+    return "users";
+}
+
+@GetMapping("/template1")
+public String navbar(Model model) {
+    model.addAttribute("email",getCurrentUser().getEmail() );
+    return "template1";
+}
+
+@GetMapping("/userinfo")
+public String userinfo() {
+    return "userinfo";
+}
+
+@GetMapping("/adduser")
+public String adduser(Model model) {
+    model.addAttribute("user", new User());
+    return "adduser";
+}
+
 
     @PostMapping("/save")
     public String login(Model model,@Valid User user,BindingResult bindingResult) { 
