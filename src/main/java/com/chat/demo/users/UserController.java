@@ -1,5 +1,6 @@
 package com.chat.demo.users;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
@@ -34,7 +35,7 @@ public class UserController {
 public String index() {
     return "index";
 }
-
+@PreAuthorize("hasRole('ADMIN')")
 @GetMapping("/users")
 public String users(Model model) {
     java.util.List<User> users = userRepo.findAll();
@@ -52,7 +53,7 @@ public String navbar(Model model) {
 public String userinfo() {
     return "userinfo";
 }
-
+@PreAuthorize("hasRole('ADMIN')")
 @GetMapping("/adduser")
 public String adduser(Model model) {
     model.addAttribute("user", new User());
