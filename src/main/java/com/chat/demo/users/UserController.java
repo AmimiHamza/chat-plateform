@@ -39,7 +39,6 @@ public class UserController {
     public String navbar(Model model) {
         return userService.navbar(model);
     }
-
     @GetMapping("/userinfo")
     public String userinfo() {
         return userService.userinfo();

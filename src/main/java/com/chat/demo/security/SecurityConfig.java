@@ -1,4 +1,4 @@
-package com.chat.demo.sec;
+package com.chat.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import java.util.Collections;
 import com.chat.demo.users.User;
-import com.chat.demo.users.UserRepo;
+import com.chat.demo.users.UserRepository;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
@@ -28,13 +28,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SecurityConfig {
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
 
 
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> {
-            User user = userRepo.findByEmail(email);
+            User user = userRepository.findByEmail(email);
             if (user == null) throw new UsernameNotFoundException("User not found with username or email : " + email);
 
             // Store the email in the session

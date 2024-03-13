@@ -12,10 +12,10 @@ import org.springframework.validation.BindingResult;
 @AllArgsConstructor
 @Service
 public class UserService {
-    private UserRepo userRepo;
-
+    private UserRepository userRepository;
+    
     private User getCurrentUser() {
-        return userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     public String in() {
@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public String users(Model model) {
-        java.util.List<User> users = userRepo.findAll();
+        java.util.List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "users";
     }
@@ -49,7 +49,7 @@ public class UserService {
     public String saveUser(Model model, @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "adduser";
-        userRepo.save(user);
+        userRepository.save(user);
         return "users";
     }
 }

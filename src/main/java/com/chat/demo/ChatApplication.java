@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.chat.demo.users.User;
-import com.chat.demo.users.UserRepo;
+import com.chat.demo.users.UserRepository;
 
 @SpringBootApplication
 public class ChatApplication {
@@ -15,13 +15,13 @@ public class ChatApplication {
 		SpringApplication.run(ChatApplication.class, args);
 	}
 	@Bean
-    CommandLineRunner commandLineRunner(UserRepo userRepo){
+    CommandLineRunner commandLineRunner(UserRepository userRepository){
         return args -> {
-            userRepo.save(new User(null,"hamza","hamimi@insea.ac.ma","h","ADMIN"));
-            userRepo.save(new User(null,"zakaria","zamimi@insea.ac.ma","z","USER"));
-            userRepo.save(new User(null,"ahmed","aamimi@insea.ac.ma","a","USER"));
-            userRepo.save(new User(null,"mohammed","mamimi@insea.ac.ma","m","ADMIN"));
-			userRepo.findAll().forEach(u->{
+            userRepository.save(new User(null,"hamza","hamimi@insea.ac.ma","h","ADMIN"));
+            userRepository.save(new User(null,"zakaria","zamimi@insea.ac.ma","z","USER"));
+            userRepository.save(new User(null,"ahmed","aamimi@insea.ac.ma","a","USER"));
+            userRepository.save(new User(null,"mohammed","mamimi@insea.ac.ma","m","ADMIN"));
+			userRepository.findAll().forEach(u->{
 				System.out.println(u.getName()+" has been added to the database");
 			} );
         };
