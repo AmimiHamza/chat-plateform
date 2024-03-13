@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.chat.demo.users.User;
-import com.chat.demo.users.UserRepo;
+import com.chat.demo.users.UserRepository;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,7 +29,7 @@ public class ChatApplicationTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserRepo userRepo;
+    private UserRepository userRepo;
 
     @Test
 	@WithMockUser
@@ -40,19 +40,25 @@ public class ChatApplicationTests {
     }
 
     @Test
-	@WithMockUser
-
+    @WithMockUser(roles = {"ADMIN"})
     public void testUsersPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users"))
                .andExpect(MockMvcResultMatchers.status().isOk())
                .andExpect(MockMvcResultMatchers.view().name("users"));
     }
 
+    @Test
+    @WithMockUser(roles = {"USER"})
+    public void testusersPageAsUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users"))
+            .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
     
 
     @Test
+	
 	@WithMockUser
-
     public void testUserinfoPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/userinfo"))
                .andExpect(MockMvcResultMatchers.status().isOk())
@@ -60,13 +66,20 @@ public class ChatApplicationTests {
     }
 
     @Test
-	@WithMockUser
-
+	@WithMockUser(roles = {"ADMIN"})
     public void testAdduserPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/adduser"))
                .andExpect(MockMvcResultMatchers.status().isOk())
                .andExpect(MockMvcResultMatchers.view().name("adduser"));
     }
+    @Test
+    @WithMockUser(roles = {"USER"})
+    public void testAdduserPageAsUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/adduser"))
+            .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    
 
     // Test save method with invalid user
     @Test
@@ -91,5 +104,6 @@ public class ChatApplicationTests {
                .andExpect(MockMvcResultMatchers.status().isOk())
                .andExpect(MockMvcResultMatchers.view().name("users"));
     }
-}
 
+
+}
